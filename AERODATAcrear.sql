@@ -79,6 +79,3 @@ foreign key (id_pasajero) REFERENCES PASAJERO(id_pasajero),
 foreign key (id_vuelo) REFERENCES VUELO(id_vuelo)
 )
 go
-
-
-
