@@ -96,7 +96,3 @@ values
 ('RES012', '000012', 'VUE002', '2023-06-12 17:00:00', 'Confirmada');
 
 select *from RESERVA
-
-
-
-select *from PASAJERO
