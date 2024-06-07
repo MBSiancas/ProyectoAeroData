@@ -1,6 +1,6 @@
 use AERODATA
 
-insert into AEROPUERTO(id_aeropuerto, nombre_aeropuerto, ciudad, pais, num_compaÃ±ias)
+insert into AEROPUERTO(id_aeropuerto, nombre, ciudad, pais, num_compañias)
 values 
 ('JRGCHV', 'Jorge Chavez', 'Lima', 'Peru', '3'),
 ('ELDRDO', 'El Dorado', 'Bogota', 'Colombia', '3'),
@@ -10,39 +10,39 @@ values
 
 select *from AEROPUERTO
 
-insert into EMPLEADO (id_empleado, nombre_empleado, id_aeropuerto, fecha_contratacion, salario, email, telefono, actividad)
+insert into EMPLEADO (id_empleado, nombre, id_aeropuerto, fecha_contratacion, salario, email, telefono, actividad)
 values
-('EMP001', 'Carlos LÃ³pez', 'JRGCHV', '2020-01-15 08:00:00', 3500.00, 'carloslopez@gmail.com', '955123456', 'ACTIVO'),
-('EMP002', 'Laura MartÃ­nez', 'ELDRDO', '2018-03-20 09:00:00', 2800.00, 'lauramartinez@gmail.com', '955234567', 'ACTIVO'),
-('EMP003', 'Miguel RodrÃ­guez', 'ARMRBE', '2019-07-10 10:00:00', 3000.00, 'miguelrodriguez@gmail.com', '955345678', 'ACTIVO'),
-('EMP004', 'Ana FernÃ¡ndez', 'BNJREZ', '2021-05-22 11:00:00', 3200.00, 'anafernandez@gmail.com', '955456789', 'ACTIVO'),
-('EMP005', 'JosÃ© GarcÃ­a', 'ALJVLA', '2017-11-18 12:00:00', 3600.00, 'josegarcia@gmail.com', '955567890', 'ACTIVO');
+('EMP001', 'Carlos López', 'JRGCHV', '2020-01-15 08:00:00', 3500.00, 'carloslopez@gmail.com', '955123456', 'ACTIVO'),
+('EMP002', 'Laura Martínez', 'ELDRDO', '2018-03-20 09:00:00', 2800.00, 'lauramartinez@gmail.com', '955234567', 'ACTIVO'),
+('EMP003', 'Miguel Rodríguez', 'ARMRBE', '2019-07-10 10:00:00', 3000.00, 'miguelrodriguez@gmail.com', '955345678', 'ACTIVO'),
+('EMP004', 'Ana Fernández', 'BNJREZ', '2021-05-22 11:00:00', 3200.00, 'anafernandez@gmail.com', '955456789', 'ACTIVO'),
+('EMP005', 'José García', 'ALJVLA', '2017-11-18 12:00:00', 3600.00, 'josegarcia@gmail.com', '955567890', 'ACTIVO');
 
 select *from EMPLEADO
 
 insert into MANTENIMIENTO (id_mantenimiento, id_aeropuerto, descripcion, fecha_inicio, fecha_fin)
 values
-('MAN001', 'JRGCHV', 'RevisiÃ³n general de pistas', '2023-01-10 09:00:00', '2023-01-15 17:00:00'),
-('MAN002', 'ELDRDO', 'Mantenimiento de sistemas de iluminaciÃ³n', '2023-02-01 08:00:00', '2023-02-03 18:00:00'),
-('MAN003', 'ARMRBE', 'InspecciÃ³n de seguridad en hangares', '2023-03-15 10:00:00', '2023-03-18 16:00:00'),
-('MAN004', 'BNJREZ', 'ReparaciÃ³n de la torre de control', '2023-04-05 07:00:00', '2023-04-10 20:00:00'),
-('MAN005', 'ALJVLA', 'ActualizaciÃ³n del sistema de gestiÃ³n de vuelos', '2023-05-12 09:00:00', '2023-05-14 19:00:00');
+('MAN001', 'JRGCHV', 'Revisión general de pistas', '2023-01-10 09:00:00', '2023-01-15 17:00:00'),
+('MAN002', 'ELDRDO', 'Mantenimiento de sistemas de iluminación', '2023-02-01 08:00:00', '2023-02-03 18:00:00'),
+('MAN003', 'ARMRBE', 'Inspección de seguridad en hangares', '2023-03-15 10:00:00', '2023-03-18 16:00:00'),
+('MAN004', 'BNJREZ', 'Reparación de la torre de control', '2023-04-05 07:00:00', '2023-04-10 20:00:00'),
+('MAN005', 'ALJVLA', 'Actualización del sistema de gestión de vuelos', '2023-05-12 09:00:00', '2023-05-14 19:00:00');
 
 select *from MANTENIMIENTO
 
-insert into COMPAÃ‘IA(id_compaÃ±ia, nombre_compaÃ±ia, num_vuelos)
+insert into COMPAÑIA(id_compañia, nombre, num_vuelos)
 values 
 ('LAN001', 'LATAM AIRLINES', '3'),
 ('LAN002', 'SKY AIRLINE', '3'),
 ('LAN003', 'AZUL', '3'),
 ('LAN004', 'COPA AIRLINES', '3'),
-('LAN005', 'SA AVIANCA', '3')
+('LAN005', 'SA AVIANCA', '3');
 
-select *from COMPAÃ‘IA
+select *from COMPAÑIA
 
 
-insert into VUELO(id_vuelo, id_aeropuerto, id_compaÃ±ia, ciudad_origen, ciudad_destino,
-fecha, precio, num_max_pasajeros, num_actu_pasajeros) 
+insert into VUELO(id_vuelo, id_aeropuerto, id_compañia, ciudad_origen, ciudad_destino,
+fecha, precio, num_max_pasajeros, num_actu_pasajeros)
 values 
 ('VUE001', 'JRGCHV', 'LAN001', 'Lima', 'Londres', '2023-01-10 08:00:00', 3877.00, 300, 156),
 ('VUE002', 'ELDRDO', 'LAN001', 'Bogota', 'Paris', '2023-02-15 09:00:00', 2502.00, 250, 136),
@@ -62,13 +62,13 @@ values
 
 select *from VUELO
 
-insert into PASAJERO(id_pasajero, nombre_pasajero, num_pasaporte, nacionalidad,
+insert into PASAJERO(id_pasajero, nombre, num_pasaporte, nacionalidad,
 num_vuelos, email, telefono)
 values 
 ('000001', 'Gustavo Coronel', 'PE6789636', 'Peruana', 4, 'gcoronel@gmail.com', '945678965'),
 ('000002', 'Pedro Gonzales', 'MX7654366', 'Mexicana', 5 , 'pgonzales@gmail.com', '989658743'),
 ('000003', 'Andrea Fernandez', 'PE4589723', 'Peruana', 6, 'mferna@gmail.com', '987654321'),
-('000004', 'Lisbeth Miranda', 'ES9876125', 'EspaÃ±ola', 7, 'libmiran@gmail.com', '976543210'),
+('000004', 'Lisbeth Miranda', 'ES9876125', 'Española', 7, 'libmiran@gmail.com', '976543210'),
 ('000005', 'Angel Ruiz', 'CH3215698', 'Chilena', 4, 'angrz56@gmail.com', '965432109'),
 ('000006', 'Diego Echebarria', 'CO1428579', 'Colombiana', 9, 'diegrria8@gmail.com', '998765432'),
 ('000007', 'Justo Montoya', 'PE5328964', 'Peruana', 2, 'justmontoya59@gmail.com', '954321098'),
@@ -76,23 +76,25 @@ values
 ('000009', 'Maria Hernandez', 'CO2198765', 'Colombiana', 5, 'mariahernan89@gmail.com', '932109876'),
 ('000010', 'Chie Hiromoto', 'JP5642317', 'Japonesa', 1, 'hiroch5@gmail.com', '921098765'),
 ('000011', 'Jose Casas', 'MX3957214', 'Mexicana', 7, 'josecas54@gmail.com', '910987654'),
-('000012', 'Fernando Perez', 'ES2583697', 'EspaÃ±ola', 8, 'fperez45@gmail.com', '925698467')
+('000012', 'Fernando Perez', 'ES2583697', 'Española', 8, 'fperez45@gmail.com', '925698467');
 
 select *from PASAJERO
 
-insert into RESERVA (id_reserva, id_pasajero, id_vuelo, fecha_reserva, estado)
+insert into RESERVA (id_reserva, id_pasajero, id_vuelo, fecha_reserva, pago, estado)
 values
-('RES001', '000001', 'VUE001', '2023-06-01 10:00:00', 'Confirmada'),
-('RES002', '000002', 'VUE002', '2023-06-02 12:00:00', 'Confirmada'),
-('RES003', '000003', 'VUE003', '2023-06-03 14:00:00', 'Pendiente'),
-('RES004', '000004', 'VUE004', '2023-06-04 16:00:00', 'Cancelada'),
-('RES005', '000005', 'VUE005', '2023-06-05 18:00:00', 'Confirmada'),
-('RES006', '000006', 'VUE011', '2023-06-06 20:00:00', 'Confirmada'),
-('RES007', '000007', 'VUE012', '2023-06-07 22:00:00', 'Pendiente'),
-('RES008', '000008', 'VUE008', '2023-06-08 09:00:00', 'Confirmada'),
-('RES009', '000009', 'VUE009', '2023-06-09 11:00:00', 'Confirmada'),
-('RES010', '000010', 'VUE010', '2023-06-10 13:00:00', 'Cancelada'),
-('RES011', '000011', 'VUE008', '2023-06-11 15:00:00', 'Confirmada'),
-('RES012', '000012', 'VUE002', '2023-06-12 17:00:00', 'Confirmada');
+('RES001', '000001', 'VUE001', '2023-06-01 10:00:00', 3877.00, 'Confirmada'),
+('RES002', '000002', 'VUE002', '2023-06-02 12:00:00', 2502.00, 'Confirmada'),
+('RES003', '000003', 'VUE003', '2023-06-03 14:00:00', 250.00, 'Pendiente'),
+('RES004', '000004', 'VUE004', '2023-06-04 16:00:00', 2400.00, 'Cancelada'),
+('RES005', '000005', 'VUE005', '2023-06-05 18:00:00', 750.00, 'Confirmada'),
+('RES006', '000006', 'VUE011', '2023-06-06 20:00:00', 2800.00, 'Confirmada'),
+('RES007', '000007', 'VUE012', '2023-06-07 22:00:00', 1000.00, 'Pendiente'),
+('RES008', '000008', 'VUE008', '2023-06-08 09:00:00', 2400.00, 'Confirmada'),
+('RES009', '000009', 'VUE009', '2023-06-09 11:00:00', 800.00, 'Confirmada'),
+('RES010', '000010', 'VUE010', '2023-06-10 13:00:00', 1500.00, 'Cancelada'),
+('RES011', '000011', 'VUE008', '2023-06-11 15:00:00', 2400.00, 'Confirmada'),
+('RES012', '000012', 'VUE002', '2023-06-12 17:00:00', 2502.00, 'Confirmada');
 
 select *from RESERVA
+
+
