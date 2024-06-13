@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "4bfda2ca-672c-479b-9f2a-f775c256037b",
+		"name": "AeroData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34988325"
+	},
+	"item": [
+		{
+			"name": "ConsultarVuelos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aerodata/vuelos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aerodata",
+						"vuelos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearPasajero",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Marco Siancas\",\r\n    \"num_pasaporte\": \"PE2896963\",\r\n    \"nacionalidad\": \"Peruana\",\r\n    \"email\": \"msiancas.q@uni.pe\",\r\n    \"telefono\": \"945868595\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/aerodata/pasajero/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aerodata",
+						"pasajero",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearReserva",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_pasajero\": \"000001\",\r\n    \"id_vuelo\": \"VUE005\",\r\n    \"pago\": \"500.00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/aerodata/reserva/crear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aerodata",
+						"reserva",
+						"crear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Realizar un mantenimiento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_aeropuerto\": \"JRGCHV\",\r\n    \"descripcion\": \"Limpieza de aviones\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/aerodata/mantenimiento/realizar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aerodata",
+						"mantenimiento",
+						"realizar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reprogramar Vuelo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_vuelo\": \"VUE001\",\r\n    \"fecha\": \"2024-06-30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/aerodata/vuelo/reprogramar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aerodata",
+						"vuelo",
+						"reprogramar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
