@@ -32,8 +32,12 @@ public class AeroDataService {
 		// Variables
 		String sql, id_pasajero;
 		int cont;
-		// Verificar el numero de pasaporte (si ya existe, entonces ya fue p, tendria
-		// que hacer reserva)
+		// Verificar el numero de pasaporte (si ya existe, entonces tendria que hacer reserva)
+		sql = "select count(1) cont from PASAJERO where num_pasaporte = ?";
+		cont = jdbcTemplate.queryForObject(sql, Integer.class, bean.getNum_pasaporte());
+		if (cont == 1) {
+			throw new RuntimeException("El pasajero ya está registrado");
+		}
 		// Creando su id
 		sql = "select top 1 id_pasajero from PASAJERO order by id_pasajero desc";
 		cont = jdbcTemplate.queryForObject(sql, Integer.class);
@@ -63,8 +67,7 @@ public class AeroDataService {
 		int cont, numActPasajeros, numMaxPasajeros;
 		// Verificar que exista el vuelo
 		verificarVuelo(bean.getId_vuelo());
-		// Verificar el numero de pasaporte (si no existe, fue p, tendria que pasar al
-		// service de crearPasajero)
+		// Verificar el numero de id del pasajero (si no existe, tendria que pasar al service de crearPasajero)
 		sql = "select count(1) cont from PASAJERO where id_pasajero = ?";
 		cont = jdbcTemplate.queryForObject(sql, Integer.class, bean.getId_pasajero());
 		if (cont != 1) {
@@ -112,6 +115,34 @@ public class AeroDataService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	public ReservaDTO cancelarReserva(ReservaDTO bean) {
+		// Variables
+		String sql;
+		// Verificar id_reserva
+		verificarReserva(bean.getId_reserva());
+		//Recuperar el id_pasajero y el id_vuelo
+		sql = "select id_pasajero, id_vuelo, pago from RESERVA where id_reserva = ?";
+		jdbcTemplate.query(sql, (rs, rowNum) -> { 
+			  bean.setId_pasajero(rs.getString("id_pasajero")); 
+			  bean.setId_vuelo(rs.getString("id_vuelo")); 
+			  bean.setPago(rs.getDouble("pago"));
+			  return bean;
+			 }, bean.getId_reserva()); 
+		// Actulizar reserva a estado cancelado
+		sql = "update RESERVA set estado = 'Cancelado'";
+		jdbcTemplate.update(sql);
+		bean.setEstado("Cancelado");
+		// Actualizar la tabla pasajeros
+		sql = "update PASAJERO set num_vuelos = num_vuelos-1 where id_pasajero = ?";
+		jdbcTemplate.update(sql, bean.getId_pasajero());
+		//Actualizar la tabla de vuelos
+		sql = "update VUELO set num_actu_pasajeros = num_actu_pasajeros-1";
+		jdbcTemplate.update(sql);
+		// Reporte
+		return bean;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public MantenimientoDTO realizarMantenimiento(MantenimientoDTO bean) {
 		// Variables
 		String sql, id_mantenimiento;
@@ -130,12 +161,11 @@ public class AeroDataService {
 		sql = "insert into MANTENIMIENTO (id_mantenimiento, id_aeropuerto, descripcion, fecha_inicio, fecha_fin) ";
 		sql += "values (?, ?, ?, getdate(), dateadd(day, 1, getdate()))";
 		jdbcTemplate.update(sql, id_mantenimiento, bean.getId_aeropuerto(), bean.getDescripcion());
-		// Cancelar las reservas de los vuelos del aeropuerto
-		sql = "UPDATE RESERVA SET estado = 'Cancelada' ";
+		// Poner en pendiente todas las reservas de los vuelos del aeropuerto afectado
+		sql = "UPDATE RESERVA SET estado = 'Pendiente' ";
 		sql += "WHERE id_vuelo IN (";
 		sql += "SELECT id_vuelo FROM VUELO WHERE id_aeropuerto = ?);";
 		jdbcTemplate.update(sql, bean.getId_aeropuerto());
-		//Poner todos los vuelos afectados: numero actual de pasajeros cero
 		// Reporte
 		sql = "select fecha_inicio from MANTENIMIENTO where id_mantenimiento = ?";
 		bean.setFecha_inicio(jdbcTemplate.queryForObject(sql, String.class, id_mantenimiento));
@@ -147,17 +177,29 @@ public class AeroDataService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public VueloDTO reprogramarVuelo(VueloDTO bean) {
-		//Variables
+		// Variables
 		String sql;
-		//Verificar que el vuelo exista
+		// Verificar que el vuelo exista
 		verificarVuelo(bean.getId_vuelo());
-		//Actualizar la fecha del vuelo
+		// Actualizar la fecha del vuelo
 		sql = "update VUELO set fecha = ? where id_vuelo = ?";
 		jdbcTemplate.update(sql, bean.getFecha(), bean.getId_vuelo());
-		//Cambiar el estado de las reservas a pendiente
+		// Cambiar el estado de las reservas a pendiente
 		sql = "update RESERVA set estado = 'Pendiente' where id_vuelo = ?";
 		jdbcTemplate.update(sql, bean.getId_vuelo());
 		// Reporte
+		sql = "select id_aeropuerto, id_compañia, ciudad_origen, ciudad_destino, precio, ";
+		sql += "num_max_pasajeros, num_actu_pasajeros from VUELO where id_vuelo = ?";
+		jdbcTemplate.query(sql, (rs, rowNum) -> { 
+			  bean.setId_aeropuerto(rs.getString("id_aeropuerto"));
+			  bean.setId_compañia(rs.getString("id_compañia"));
+			  bean.setCiudad_origen(rs.getString("ciudad_origen"));
+			  bean.setCiudad_destino(rs.getString("ciudad_destino"));
+			  bean.setPrecio(rs.getDouble("precio"));
+			  bean.setNum_max_pasajeros(rs.getInt("num_max_pasajeros"));
+			  bean.setNum_actu_pasajeros(rs.getInt("num_actu_pasajeros"));
+			  return bean;
+			 }, bean.getId_vuelo()); 
 		return bean;
 	}
 
@@ -167,6 +209,15 @@ public class AeroDataService {
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, id_vuelo);
 		if (cont != 1) {
 			throw new RuntimeException("El vuelo no existe");
+		}
+	}
+
+	@Transactional(propagation = Propagation.NESTED)
+	private void verificarReserva(String id_reserva) {
+		String sql = "select count(1) cont from RESERVA where id_reserva = ?";
+		int cont = jdbcTemplate.queryForObject(sql, Integer.class, id_reserva);
+		if (cont != 1) {
+			throw new RuntimeException("La reserva no existe");
 		}
 	}
 }

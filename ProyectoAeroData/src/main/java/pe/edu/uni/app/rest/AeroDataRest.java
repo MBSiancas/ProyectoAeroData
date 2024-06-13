@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,18 @@ public class AeroDataRest {
 		}
 	}
 	
+	@PutMapping("/reserva/cancelar")
+	public ResponseEntity<?> cancelarReserva(@RequestBody ReservaDTO bean){
+		try {
+			aerodataService.cancelarReserva(bean);
+			return ResponseEntity.ok(bean);
+		}catch (Exception e) {
+			ErrorResponse error;
+			error = new ErrorResponse(e.getMessage(), HttpStatus.CONFLICT.value());
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+		}
+	}
+	
 	@PostMapping("/mantenimiento/realizar")
 	public ResponseEntity<?> realizarMantenimiento(@RequestBody MantenimientoDTO bean){
 		try {
@@ -67,7 +80,7 @@ public class AeroDataRest {
 		}
 	}
 	
-	@PostMapping("/vuelo/reprogramar")
+	@PutMapping("/vuelo/reprogramar")
 	public ResponseEntity<?> reprogramarVuelo(@RequestBody VueloDTO bean){
 		try {
 			aerodataService.reprogramarVuelo(bean);
